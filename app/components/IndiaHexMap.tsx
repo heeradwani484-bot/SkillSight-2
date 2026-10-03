@@ -109,26 +109,64 @@ export default function IndiaHexMap({ selectedSkill, selectedState, allSkills }:
     },
   };
 
-  // init Leaflet once
+   // init Leaflet once
   useEffect(() => {
-    if (!mapElRef.current || mapRef.current) return;
-    import("leaflet").then(L => {
+    let cancelled = false;
+
+    const initMap = async () => {
+      if (!mapElRef.current || mapRef.current) return;
+
+      const L = await import("leaflet");
+
+      if (cancelled || !mapElRef.current || mapRef.current) return;
+
+      // Prevent Leaflet from initializing the same DOM container twice
+      const container = mapElRef.current as any;
+      if (container._leaflet_id) {
+        return;
+      }
+
       delete (L.Icon.Default.prototype as any)._getIconUrl;
-      const map = L.map(mapElRef.current!, {
-        center: [22.5, 82.5], zoom: 5, minZoom: 4, maxZoom: 10, zoomControl: false,
+
+      const map = L.map(container, {
+        center: [22.5, 82.5],
+        zoom: 5,
+        minZoom: 4,
+        maxZoom: 10,
+        zoomControl: false,
       });
+
       L.control.zoom({ position: "bottomright" }).addTo(map);
-      const tile = L.tileLayer(TILES.satellite.url, { attribution: TILES.satellite.attr, maxZoom: 19 });
+
+      const tile = L.tileLayer(TILES.satellite.url, {
+        attribution: TILES.satellite.attr,
+        maxZoom: 19,
+      });
       tile.addTo(map);
-      const labels = L.tileLayer(TILES.satellite.labelsUrl!, { maxZoom: 19 });
+
+      const labels = L.tileLayer(TILES.satellite.labelsUrl!, {
+        maxZoom: 19,
+      });
       labels.addTo(map);
+
       tileRef.current = { base: tile, labels };
-      mapRef.current  = map;
+      mapRef.current = map;
       setMapReady(true);
-    });
-    return () => { if (mapRef.current) { mapRef.current.remove(); mapRef.current = null; } };
+    };
+
+    initMap();
+
+    return () => {
+      cancelled = true;
+
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); 
 
   // switch tile layer
   useEffect(() => {
