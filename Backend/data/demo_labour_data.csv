@@ -1,0 +1,57 @@
+state,district,sector,skill,historical_demand,current_demand,current_supply,training_capacity,demand_growth_rate,industry_growth_rate,source,confidence_score,lat,lng,nco_code,cluster_name
+Maharashtra,Pune,Electric Vehicles,EV Battery Management Specialist,1200,1650,900,1000,0.22,0.25,NCS & e-Shram Ingestion,88,18.5204,73.8567,NCO-2015/7412.0100,Pune Auto-EV Industrial Hub
+Maharashtra,Nashik,Electric Vehicles,EV Battery Management Specialist,700,850,1350,1100,0.05,0.08,NCS & e-Shram Ingestion,82,19.9975,73.7898,NCO-2015/7412.0100,Nashik Industrial Belt
+Maharashtra,Nagpur,Electric Vehicles,EV Battery Management Specialist,450,520,2400,1200,0.03,0.06,NCS & e-Shram Ingestion,80,21.1458,79.0882,NCO-2015/7412.0100,Vidarbha Industrial Corridor
+Maharashtra,Mumbai,Electric Vehicles,EV Battery Management Specialist,900,1200,750,850,0.18,0.20,NCS & e-Shram Ingestion,86,19.0760,72.8777,NCO-2015/7412.0100,MMR Clean Mobility Zone
+Gujarat,Ahmedabad,Electric Vehicles,EV Battery Management Specialist,1100,1500,800,950,0.24,0.26,NCS & e-Shram Ingestion,85,23.0225,72.5714,NCO-2015/7412.0100,Sanand-Ahmedabad Auto Zone
+Gujarat,Surat,Electric Vehicles,EV Battery Management Specialist,600,750,1100,1000,0.06,0.09,NCS & e-Shram Ingestion,81,21.1702,72.8311,NCO-2015/7412.0100,South Gujarat EV Component Belt
+Gujarat,Vadodara,Electric Vehicles,EV Battery Management Specialist,800,950,1500,1200,0.07,0.10,NCS & e-Shram Ingestion,83,22.3072,73.1812,NCO-2015/7412.0100,Vadodara Heavy Power Corridor
+Karnataka,Bengaluru,Electric Vehicles,EV Battery Management Specialist,1800,2400,1400,1600,0.28,0.32,NCS & e-Shram Ingestion,90,12.9716,77.5946,NCO-2015/7412.0100,Bengaluru High-Tech EV Cluster
+Karnataka,Mysuru,Electric Vehicles,EV Battery Management Specialist,500,600,950,850,0.08,0.11,NCS & e-Shram Ingestion,78,12.2958,76.6394,NCO-2015/7412.0100,Mysuru Precision Corridor
+Tamil Nadu,Chennai,Electric Vehicles,EV Battery Management Specialist,1900,2600,1600,1800,0.25,0.28,NCS & e-Shram Ingestion,89,13.0827,80.2707,NCO-2015/7412.0100,Chennai Detroit-EV Belt
+Tamil Nadu,Coimbatore,Electric Vehicles,EV Battery Management Specialist,700,850,1300,1100,0.06,0.09,NCS & e-Shram Ingestion,82,11.0168,76.9558,NCO-2015/7412.0100,Kongu Region Auto-Components
+Tamil Nadu,Hosur,Electric Vehicles,EV Battery Management Specialist,1200,1800,1050,1200,0.30,0.35,NCS & e-Shram Ingestion,87,12.7409,77.8253,NCO-2015/7412.0100,Hosur EV 2-Wheeler Hub
+Telangana,Hyderabad,Electric Vehicles,EV Battery Management Specialist,1300,1750,1100,1250,0.22,0.26,NCS & e-Shram Ingestion,86,17.3850,78.4867,NCO-2015/7412.0100,Zaheerabad-Hyderabad EV Corridor
+Andhra Pradesh,Visakhapatnam,Electric Vehicles,EV Battery Management Specialist,600,720,1250,1000,0.05,0.08,NCS & e-Shram Ingestion,79,17.6868,83.2185,NCO-2015/7412.0100,Vizag Coastal Industrial Zone
+Kerala,Kochi,Electric Vehicles,EV Battery Management Specialist,500,620,980,850,0.07,0.10,NCS & e-Shram Ingestion,80,9.9312,76.2673,NCO-2015/7412.0100,Kochi Green Mobility Corridor
+Haryana,Gurugram,Electric Vehicles,EV Battery Management Specialist,1400,1950,1100,1300,0.26,0.30,NCS & e-Shram Ingestion,88,28.4595,77.0266,NCO-2015/7412.0100,NCR Auto-Tech Innovation Hub
+Uttar Pradesh,Noida,Electric Vehicles,EV Battery Management Specialist,1200,1600,950,1100,0.25,0.29,NCS & e-Shram Ingestion,85,28.5355,77.3910,NCO-2015/7412.0100,Noida EV Electronics Corridor
+Delhi,New Delhi,Electric Vehicles,EV Battery Management Specialist,800,1100,600,750,0.22,0.25,NCS & e-Shram Ingestion,84,28.6139,77.2090,NCO-2015/7412.0100,Capital EV Fleet Hub
+Rajasthan,Jaipur,Electric Vehicles,EV Battery Management Specialist,600,750,1200,1000,0.08,0.11,NCS & e-Shram Ingestion,80,26.9124,75.7873,NCO-2015/7412.0100,Jaipur Industrial Area
+Punjab,Ludhiana,Electric Vehicles,EV Battery Management Specialist,700,820,1400,1150,0.05,0.07,NCS & e-Shram Ingestion,81,30.9010,75.8573,NCO-2015/7412.0100,Ludhiana Light Engineering Hub
+Madhya Pradesh,Indore,Electric Vehicles,EV Battery Management Specialist,750,920,1350,1100,0.07,0.10,NCS & e-Shram Ingestion,82,22.7196,75.8577,NCO-2015/7412.0100,Pithampur Auto Cluster
+Madhya Pradesh,Bhopal,Electric Vehicles,EV Battery Management Specialist,500,650,1150,900,0.06,0.08,NCS & e-Shram Ingestion,79,23.2599,77.4126,NCO-2015/7412.0100,Bhopal Heavy Electrical Belt
+Chhattisgarh,Raipur,Electric Vehicles,EV Battery Management Specialist,400,500,920,800,0.05,0.07,NCS & e-Shram Ingestion,76,21.2514,81.6296,NCO-2015/7412.0100,Raipur Industrial Corridor
+West Bengal,Kolkata,Electric Vehicles,EV Battery Management Specialist,900,1150,850,950,0.16,0.19,NCS & e-Shram Ingestion,83,22.5726,88.3639,NCO-2015/7412.0100,East India Urban EV Hub
+Jharkhand,Jamshedpur,Electric Vehicles,EV Battery Management Specialist,800,950,1550,1300,0.06,0.09,NCS & e-Shram Ingestion,84,22.8046,86.2029,NCO-2015/7412.0100,Chota Nagpur Heavy Steel & Auto Zone
+Odisha,Bhubaneswar,Electric Vehicles,EV Battery Management Specialist,550,680,1050,900,0.08,0.12,NCS & e-Shram Ingestion,78,20.2961,85.8245,NCO-2015/7412.0100,Kalinga Clean Mobility Zone
+Bihar,Patna,Electric Vehicles,EV Battery Management Specialist,400,520,1800,1200,0.04,0.06,NCS & e-Shram Ingestion,75,25.5941,85.1376,NCO-2015/7412.0100,Gangetic Skill Pool
+Assam,Guwahati,Electric Vehicles,EV Battery Management Specialist,350,480,950,800,0.08,0.12,NCS & e-Shram Ingestion,77,26.1445,91.7362,NCO-2015/7412.0100,North-East Mobility Hub
+Himachal Pradesh,Shimla,Electric Vehicles,EV Battery Management Specialist,280,330,380,400,0.06,0.08,NCS & e-Shram Ingestion,72,31.1048,77.1734,NCO-2015/7412.0100,Shimla Hill Region EV Zone
+Uttarakhand,Dehradun,Electric Vehicles,EV Battery Management Specialist,320,400,450,480,0.07,0.09,NCS & e-Shram Ingestion,73,30.3165,78.0322,NCO-2015/7412.0100,Dehradun Foothills Industrial Area
+Uttar Pradesh,Kanpur,Electric Vehicles,EV Battery Management Specialist,600,780,840,900,0.09,0.11,NCS & e-Shram Ingestion,78,26.4499,80.3319,NCO-2015/7412.0100,Kanpur Industrial Belt
+Uttar Pradesh,Lucknow,Electric Vehicles,EV Battery Management Specialist,520,640,700,750,0.08,0.10,NCS & e-Shram Ingestion,76,26.8467,80.9462,NCO-2015/7412.0100,Lucknow Capital Industrial Zone
+Haryana,Faridabad,Electric Vehicles,EV Battery Management Specialist,700,880,950,1000,0.10,0.12,NCS & e-Shram Ingestion,79,28.4089,77.3178,NCO-2015/7412.0100,Faridabad Auto-Manufacturing Hub
+Punjab,Amritsar,Electric Vehicles,EV Battery Management Specialist,350,430,500,520,0.07,0.09,NCS & e-Shram Ingestion,74,31.6340,74.8723,NCO-2015/7412.0100,Amritsar Border Trade Zone
+Rajasthan,Jodhpur,Electric Vehicles,EV Battery Management Specialist,300,380,430,450,0.06,0.08,NCS & e-Shram Ingestion,72,26.2389,73.0243,NCO-2015/7412.0100,Jodhpur Desert Industrial Zone
+Madhya Pradesh,Jabalpur,Electric Vehicles,EV Battery Management Specialist,280,360,400,420,0.07,0.09,NCS & e-Shram Ingestion,71,23.1815,79.9864,NCO-2015/7412.0100,Jabalpur Defence & Auto Cluster
+Andhra Pradesh,Amaravati,Electric Vehicles,EV Battery Management Specialist,420,520,570,600,0.08,0.10,NCS & e-Shram Ingestion,76,16.5128,80.5157,NCO-2015/7412.0100,Amaravati New Capital Zone
+Telangana,Warangal,Electric Vehicles,EV Battery Management Specialist,310,380,430,450,0.07,0.09,NCS & e-Shram Ingestion,73,17.9689,79.5941,NCO-2015/7412.0100,Warangal Industrial Corridor
+Maharashtra,Pune,IT & Cloud,Full Stack Cloud Engineer,3800,4200,3800,4000,0.10,0.12,NCS & e-Shram Ingestion,90,19.0760,72.8777,NCO-2015/2512.0200,MMR Tech & Financial Hub
+Maharashtra,Pune,IT & Cloud,Data Entry Operator,5000,4800,6000,6500,-0.05,0.02,NCS & e-Shram Ingestion,92,18.5204,73.8567,NCO-2015/4132.0100,Pune Software Belt
+Gujarat,Surat,Green Energy,Solar PV Installer Technician,1500,1800,2200,2400,0.04,0.06,NCS & e-Shram Ingestion,82,21.1702,72.8311,NCO-2015/7411.0200,South Gujarat Clean Energy
+Gujarat,Ahmedabad,Green Energy,Solar PV Installer Technician,1800,2400,1500,1700,0.28,0.30,NCS & e-Shram Ingestion,84,23.0225,72.5714,NCO-2015/7411.0200,Ahmedabad Renewable Energy Zone
+Gujarat,Vadodara,Green Energy,Solar PV Installer Technician,900,1100,1900,2000,0.06,0.08,NCS & e-Shram Ingestion,79,22.3072,73.1812,NCO-2015/7411.0200,Vadodara Heavy Engineering Hub
+Rajasthan,Jaipur,Green Energy,Solar PV Installer Technician,1400,2100,1200,1400,0.32,0.36,NCS & e-Shram Ingestion,87,26.9124,75.7873,NCO-2015/7411.0200,Thar Solar Mega Hub
+Karnataka,Bengaluru,AI & Data,AI/ML Deployment Engineer,4000,5100,4100,4500,0.25,0.28,NCS & e-Shram Ingestion,88,12.9716,77.5946,NCO-2015/2511.0100,Bengaluru Silicon Valley
+Karnataka,Mysuru,Advanced Manufacturing,CNC Precision Machinist,900,850,1100,1200,-0.02,0.01,NCS & e-Shram Ingestion,75,12.2958,76.6394,NCO-2015/7223.0100,Mysuru Precision Corridor
+Tamil Nadu,Chennai,Automotive,Mechatronics Technician,2000,2300,1900,2100,0.14,0.15,NCS & e-Shram Ingestion,82,13.0827,80.2707,NCO-2015/7412.0300,Chennai Automotive Belt
+Tamil Nadu,Coimbatore,Textiles & Apparel,Advanced Garment Technologist,1100,1200,1750,1800,0.03,0.04,NCS & e-Shram Ingestion,70,11.0168,76.9558,NCO-2015/7531.0100,Coimbatore Textile Region
+Uttar Pradesh,Noida,Electronics,Semiconductor Assembly Operator,2000,3100,1800,2000,0.40,0.45,NCS & e-Shram Ingestion,86,28.5355,77.3910,NCO-2015/8211.0100,NCR Electronics Hardware Zone
+Delhi,New Delhi,Logistics,Drone Delivery Operator,500,800,400,500,0.45,0.50,NCS & e-Shram Ingestion,78,28.6139,77.2090,NCO-2015/3153.0100,Delhi Capital Mobility Zone
+Haryana,Gurugram,AI & Data,AI/ML Deployment Engineer,2500,3400,2900,3100,0.20,0.24,NCS & e-Shram Ingestion,89,28.4595,77.0266,NCO-2015/2511.0100,Gurugram Tech Hub
+Uttar Pradesh,Lucknow,Healthcare,Telemedicine Technician,800,1200,1500,1600,0.08,0.10,NCS & e-Shram Ingestion,81,26.8467,80.9462,NCO-2015/3256.0100,Central UP Healthcare Cluster
+Telangana,Hyderabad,Healthcare,Telemedicine Technician,1200,1500,1100,1300,0.20,0.25,NCS & e-Shram Ingestion,81,17.3850,78.4867,NCO-2015/3256.0100,Genome Valley Life Sciences Zone
+West Bengal,Kolkata,FinTech,Digital Payments Specialist,1500,1800,1600,1700,0.15,0.18,NCS & e-Shram Ingestion,85,22.5726,88.3639,NCO-2015/2413.0100,East India Financial Hub
+Jharkhand,Jamshedpur,Advanced Manufacturing,CNC Precision Machinist,1300,1700,1200,1350,0.12,0.15,NCS & e-Shram Ingestion,83,22.8046,86.2029,NCO-2015/7223.0100,Chota Nagpur Heavy Metal Zone
+Bihar,Patna,Logistics & Retail,E-Commerce Warehouse Logistics Associate,900,1400,2600,2800,0.05,0.07,NCS & e-Shram Ingestion,76,25.5941,85.1376,NCO-2015/4321.0100,Gangetic Logistics Cluster
