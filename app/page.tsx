@@ -5,7 +5,8 @@ import {
   Layers, Activity, Zap, Target, GitBranch, ArrowRight, MapPin
 } from "lucide-react";
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+ LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+ResponsiveContainer, PieChart, Pie, Cell
 } from "recharts";
 import IndiaHexMap from "./components/IndiaHexMap";
 
@@ -26,6 +27,7 @@ export default function Dashboard() {
   const [recommendations, setRecommendations] = useState<any[]>([]);
   const [transitions, setTransitions] = useState<any>(null);
   const [simCapacity, setSimCapacity] = useState(30);
+  const [chartMetric, setChartMetric] = useState<"all" | "demand" | "supply" | "gap">("all");
   const [simResult, setSimResult] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [metadata, setMetadata] = useState<any>(null);
@@ -123,13 +125,13 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="flex h-screen bg-slate-50 text-slate-800 font-sans overflow-hidden">
+    <div className="flex h-screen bg-[#DCEBE7] text-[#24332F] font-sans overflow-hidden">
       {/* ─── SIDEBAR ─────────────────────────────────────────── */}
-      <aside className="w-60 bg-slate-900 text-white flex flex-col flex-shrink-0">
+      <aside className="w-60 bg-[#314D49] text-white flex flex-col flex-shrink-0">
         <div className="px-5 py-6">
-          <span className="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded">SIH 26246</span>
-          <h1 className="text-xl font-extrabold tracking-tight mt-2">SkillSight AI</h1>
-          <p className="text-xs text-slate-400 mt-0.5">Predictive Labour Market</p>
+         
+          <h1 className="text-xl font-extrabold tracking-tight">SkillSight AI</h1>
+          <p className="text-xs text-[#BFD4D0] mt-1">Predicting Tomorrow's Workforce Today </p>
         </div>
 
         <nav className="flex-1 px-3 space-y-1">
@@ -138,8 +140,8 @@ export default function Dashboard() {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-2.5 ${activeTab === item.id
-                  ? item.accent ? "bg-indigo-600 text-white" : "bg-blue-600 text-white"
-                  : "text-slate-300 hover:bg-slate-800"
+                 ? "bg-[#527C75] text-white"
+                  : "text-[#D7E6E2] hover:bg-[#3F665F]"
                 }`}
             >
               {item.icon} {item.label}
@@ -148,7 +150,7 @@ export default function Dashboard() {
         </nav>
 
         {/* Data Freshness */}
-        <div className="m-3 p-3 bg-slate-800 rounded-lg border border-slate-700">
+        <div className="m-3 p-3 bg-[#29423F] rounded-lg border border-[#466B65]">
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Data Source</p>
           {metadata ? (
             <div>
@@ -167,7 +169,7 @@ export default function Dashboard() {
           )}
           <button
             onClick={fetchAllData}
-            className="mt-2 w-full bg-slate-700 hover:bg-slate-600 text-xs py-1.5 rounded flex items-center justify-center gap-1 transition-colors"
+            className="mt-2 w-full bg-[#3F665F] hover:bg-[#527C75] text-xs py-1.5 rounded flex items-center justify-center gap-1 transition-colors"
           >
             <RefreshCw size={11} className={loading ? "animate-spin" : ""} /> Refresh
           </button>
@@ -182,7 +184,7 @@ export default function Dashboard() {
           <select
             value={selectedState}
             onChange={e => { setSelectedState(e.target.value); setSelectedDistrict(""); }}
-            className="border border-slate-200 rounded-lg px-2 py-1 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+            className="border border-slate-200 rounded-lg px-2 py-1 text-sm bg-white focus:ring-2 focus:ring-[#6F958D] focus:outline-none"
           >
             <option value="">All India (National)</option>
             <option value="Maharashtra">Maharashtra</option>
@@ -197,7 +199,7 @@ export default function Dashboard() {
             <select
               value={selectedDistrict}
               onChange={e => setSelectedDistrict(e.target.value)}
-              className="border border-slate-200 rounded-lg px-2 py-1 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="border border-slate-200 rounded-lg px-2 py-1 text-sm bg-white focus:ring-2 focus:ring-[#6F958D] focus:outline-none"
             >
               <option value="">All Districts</option>
               <option value="Pune">Pune</option>
@@ -210,10 +212,10 @@ export default function Dashboard() {
           )}
           {["deepdive", "simulator", "flowmap"].includes(activeTab) && (
             <select
-              value={selectedSkill}
-              onChange={e => setSelectedSkill(e.target.value)}
-              className="ml-2 border border-blue-200 rounded-lg px-2 py-1 text-sm bg-blue-50 font-medium text-blue-800 focus:ring-2 focus:ring-blue-500 focus:outline-none max-w-xs"
-            >
+            value={selectedSkill}
+            onChange={e => setSelectedSkill(e.target.value)}
+            className="ml-2 border border-[#527C75] rounded-lg px-3 py-2 text-sm bg-white text-[#314D49] font-medium focus:outline-none focus:ring-2 focus:ring-[#527C75] focus:border-[#527C75]"
+          >
               {skills.length > 0 ? skills.map(s => <option key={s} value={s}>{s}</option>) : (
                 <option value={selectedSkill}>{selectedSkill}</option>
               )}
@@ -228,97 +230,379 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* ── OVERVIEW ── */}
-          {activeTab === "overview" && (
-            <div className="space-y-6">
-              {loading ? (
-                <div className="flex items-center justify-center h-32 text-slate-400 animate-pulse">
-                  Loading intelligence...
+      {/* ── OVERVIEW ── */}
+{activeTab === "overview" && (
+  <div className="space-y-5">
+
+    {loading ? (
+      <div className="flex items-center justify-center h-32 text-slate-400 animate-pulse">
+        Loading intelligence...
+      </div>
+    ) : summary && (
+      <>
+        {/* COMMAND STRIP */}
+        <div className="bg-slate-950 text-white rounded-2xl p-5 border border-slate-800 shadow-xl">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-400">
+                  Workforce Intelligence
+                </span>
+              </div>
+
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight">
+                Where is India's skill demand moving?
+              </h2>
+
+              <p className="text-sm text-slate-400 mt-1 max-w-2xl">
+                Monitor demand, supply and emerging workforce pressure points
+                across districts — then drill directly into the signal.
+              </p>
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => setActiveTab("deepdive")}
+                className="px-4 py-2.5 bg-white text-slate-900 rounded-lg text-xs font-bold hover:bg-slate-200 transition-colors"
+              >
+                Explore a Skill →
+              </button>
+
+              <button
+                onClick={() => setActiveTab("flowmap")}
+                className="px-4 py-2.5 border border-slate-700 text-slate-200 rounded-lg text-xs font-bold hover:bg-slate-800 transition-colors"
+              >
+                View Workforce Flow
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        {/* SIGNAL CARDS */}
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-3">
+
+          <div className="bg-white border border-slate-200 rounded-xl p-4 hover:border-blue-300 transition-colors">
+            <div className="flex justify-between items-start">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Total Demand
+              </p>
+              <span className="text-[10px] font-bold text-[#6F958D]">DEMAND</span>
+            </div>
+            <p className="text-2xl font-black text-slate-900 mt-2">
+              {summary.total_demand.toLocaleString()}
+            </p>
+            <p className="text-[10px] text-slate-400 mt-1">
+              Workforce required
+            </p>
+          </div>
+
+          <div className="bg-white border border-slate-200 rounded-xl p-4 hover:border-emerald-300 transition-colors">
+            <div className="flex justify-between items-start">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                Available Supply
+              </p>
+              <span className="text-[10px] font-bold text-emerald-500">SUPPLY</span>
+            </div>
+            <p className="text-2xl font-black text-slate-900 mt-2">
+              {summary.total_supply.toLocaleString()}
+            </p>
+            <p className="text-[10px] text-slate-400 mt-1">
+              Workforce available
+            </p>
+          </div>
+
+          <div className="bg-white border border-rose-200 rounded-xl p-4 hover:border-rose-400 transition-colors">
+            <div className="flex justify-between items-start">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-rose-500">
+                Critical Shortages
+              </p>
+              <AlertTriangle size={15} className="text-rose-500" />
+            </div>
+            <p className="text-2xl font-black text-rose-600 mt-2">
+              {summary.critical_shortages}
+            </p>
+            <p className="text-[10px] text-slate-400 mt-1">
+              Immediate attention signals
+            </p>
+          </div>
+
+          <div className="bg-white border border-emerald-200 rounded-xl p-4 hover:border-emerald-400 transition-colors">
+            <div className="flex justify-between items-start">
+              <p className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">
+                Saturated Trades
+              </p>
+              <span className="text-[10px] font-bold text-emerald-600">SURPLUS</span>
+            </div>
+            <p className="text-2xl font-black text-emerald-600 mt-2">
+              {summary.saturated_trades}
+            </p>
+            <p className="text-[10px] text-slate-400 mt-1">
+              Supply exceeds demand
+            </p>
+          </div>
+
+        </div>
+
+        {/* MAP + LIVE SIGNALS */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
+
+          {/* MAP */}
+          <div className="xl:col-span-2 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+
+            <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#2F5D62]0" />
+                  <h3 className="text-sm font-black text-slate-900">
+                    India Skill Pressure Map
+                  </h3>
                 </div>
-              ) : summary && (
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Demand</p>
-                    <h3 className="text-3xl font-extrabold text-slate-900 mt-2">{summary.total_demand.toLocaleString()}</h3>
+
+                <p className="text-[11px] text-slate-400 mt-1">
+                  Select a skill or region to investigate workforce imbalance
+                </p>
+              </div>
+
+              <div className="hidden sm:flex items-center gap-3 text-[10px] font-semibold">
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-rose-500" />
+                  Under-supply
+                </span>
+
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-[#2F5D62]0" />
+                  Workforce flow
+                </span>
+
+                <span className="flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                  Surplus
+                </span>
+              </div>
+            </div>
+
+            <div className="p-3">
+              <IndiaHexMap
+                selectedSkill={selectedSkill}
+                selectedState={selectedState}
+                allSkills={skills.length > 0 ? skills : [selectedSkill]}
+              />
+            </div>
+
+          </div>
+
+          {/* EARLY WARNING PANEL */}
+          <div className="bg-slate-950 text-white rounded-2xl border border-slate-800 overflow-hidden">
+
+            <div className="px-5 py-4 border-b border-slate-800">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle size={15} className="text-amber-400" />
+                    <h3 className="text-sm font-black">
+                      Early Warning Signals
+                    </h3>
                   </div>
-                  <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Available Supply</p>
-                    <h3 className="text-3xl font-extrabold text-slate-900 mt-2">{summary.total_supply.toLocaleString()}</h3>
+
+                  <p className="text-[10px] text-slate-500 mt-1">
+                    Areas requiring policy attention
+                  </p>
+                </div>
+
+                <span className="text-[10px] font-bold text-amber-400 bg-amber-400/10 px-2 py-1 rounded-md">
+                  {alerts.length} SIGNALS
+                </span>
+              </div>
+            </div>
+
+            <div className="p-3 space-y-2 max-h-[420px] overflow-auto">
+
+              {alerts.slice(0, 6).map((a, i) => (
+                <button
+                  key={i}
+                  onClick={() => {
+                    setSelectedSkill(a.skill);
+                    setActiveTab("deepdive");
+                  }}
+                  className="w-full text-left bg-slate-900 border border-slate-800 hover:border-amber-500/50 rounded-xl p-3 transition-all group"
+                >
+                  <div className="flex items-start justify-between gap-2">
+
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-white truncate group-hover:text-amber-300 transition-colors">
+                        {a.skill}
+                      </p>
+
+                      <p className="text-[10px] text-slate-500 mt-0.5">
+                        {a.location}
+                      </p>
+                    </div>
+
+                    <span className="text-[9px] font-bold text-rose-400 whitespace-nowrap">
+                      {a.time_horizon}
+                    </span>
+
                   </div>
-                  <div className="bg-rose-50 p-5 rounded-xl border border-rose-200 shadow-sm">
-                    <p className="text-xs font-bold text-rose-500 uppercase tracking-wider">Critical Shortages</p>
-                    <h3 className="text-3xl font-extrabold text-rose-700 mt-2">{summary.critical_shortages}</h3>
-                  </div>
-                  <div className="bg-emerald-50 p-5 rounded-xl border border-emerald-200 shadow-sm">
-                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Saturated Trades</p>
-                    <h3 className="text-3xl font-extrabold text-emerald-700 mt-2">{summary.saturated_trades}</h3>
-                  </div>
+
+                  <p className="text-[10px] text-rose-300 mt-2">
+                    {a.predicted_status}
+                  </p>
+
+                  <p className="text-[10px] text-slate-500 mt-1 line-clamp-2">
+                    {a.reason}
+                  </p>
+
+                </button>
+              ))}
+
+              {alerts.length === 0 && (
+                <div className="text-center py-10 text-xs text-slate-500">
+                  No critical alerts detected.
                 </div>
               )}
 
-              <div className="grid grid-cols-3 gap-5">
-                {/* Labour table */}
-                <div className="col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-                  <h3 className="text-base font-bold text-slate-800 mb-3">Labour Market Analytics</h3>
-                  <div className="overflow-auto max-h-72">
-                    <table className="w-full text-left text-sm">
-                      <thead className="bg-slate-50 sticky top-0">
-                        <tr>
-                          <th className="p-3 font-semibold text-slate-600 text-xs">Location</th>
-                          <th className="p-3 font-semibold text-slate-600 text-xs">Skill</th>
-                          <th className="p-3 font-semibold text-slate-600 text-xs">D / S</th>
-                          <th className="p-3 font-semibold text-slate-600 text-xs">Status</th>
-                          <th className="p-3 font-semibold text-slate-600 text-xs">Index</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {districts.map((d, i) => (
-                          <tr key={i} className="hover:bg-slate-50 cursor-pointer" onClick={() => { setSelectedSkill(d.skill); setActiveTab("deepdive"); }}>
-                            <td className="p-3 text-xs">{d.district} <span className="text-slate-400 block">{d.state}</span></td>
-                            <td className="p-3 text-xs font-medium">{d.skill}</td>
-                            <td className="p-3 text-xs">{d.current_demand} / {d.current_supply}</td>
-                            <td className="p-3">
-                              <span className={`px-2 py-0.5 text-[10px] rounded-full font-bold ${d.gap > 0 ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-800"
-                                }`}>{d.status}</span>
-                            </td>
-                            <td className="p-3">
-                              <div className="flex items-center gap-1.5">
-                                <div className="flex-1 bg-slate-200 rounded-full h-1.5">
-                                  <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${d.skill_demand_index}%` }} />
-                                </div>
-                                <span className="text-xs font-bold text-slate-600">{d.skill_demand_index}</span>
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Early Warnings */}
-                <div className="col-span-1 bg-white rounded-xl border border-rose-200 shadow-sm p-5">
-                  <h3 className="text-sm font-bold text-rose-800 mb-3 flex items-center gap-2">
-                    <AlertTriangle size={15} /> Early Warnings
-                  </h3>
-                  <div className="space-y-2">
-                    {alerts.slice(0, 5).map((a, i) => (
-                      <div key={i} className="bg-rose-50 border border-rose-100 p-3 rounded-lg">
-                        <p className="text-xs font-bold text-slate-800">{a.skill}</p>
-                        <p className="text-xs text-slate-500">{a.location}</p>
-                        <p className="text-xs text-rose-600 mt-1">{a.predicted_status} in {a.time_horizon}</p>
-                        <p className="text-[10px] text-slate-500 mt-0.5">{a.reason}</p>
-                      </div>
-                    ))}
-                    {alerts.length === 0 && <p className="text-sm text-slate-400">No critical alerts.</p>}
-                  </div>
-                </div>
-              </div>
-
-              {/* Workforce Flow Map in Overview */}
-              <IndiaHexMap selectedSkill={selectedSkill} selectedState={selectedState} allSkills={skills.length > 0 ? skills : [selectedSkill]} />
             </div>
-          )}
+          </div>
+
+        </div>
+
+        {/* MARKET SIGNAL TABLE */}
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+
+          <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-black text-slate-900">
+                District Skill Signals
+              </h3>
+              <p className="text-[10px] text-slate-400 mt-1">
+                Click any row to open its skill intelligence view
+              </p>
+            </div>
+
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              {districts.length} records
+            </span>
+          </div>
+
+          <div className="overflow-auto max-h-80">
+
+            <table className="w-full text-left text-sm">
+
+              <thead className="bg-slate-50 sticky top-0 z-10">
+                <tr>
+                  <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    Location
+                  </th>
+
+                  <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    Skill
+                  </th>
+
+                  <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    Demand / Supply
+                  </th>
+
+                  <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    Status
+                  </th>
+
+                  <th className="px-4 py-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    Demand Index
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="divide-y divide-slate-100">
+
+                {districts.map((d, i) => (
+                  <tr
+                    key={i}
+                    onClick={() => {
+                      setSelectedSkill(d.skill);
+                      setSelectedState(d.state);
+                      setActiveTab("deepdive");
+                    }}
+                    className="cursor-pointer hover:bg-[#2F5D62]/50 transition-colors"
+                  >
+
+                    <td className="px-4 py-3">
+                      <p className="text-xs font-bold text-slate-800">
+                        {d.district}
+                      </p>
+                      <p className="text-[10px] text-slate-400">
+                        {d.state}
+                      </p>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <span className="text-xs font-semibold text-slate-700">
+                        {d.skill}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <span className="text-xs font-mono text-slate-600">
+                        {d.current_demand.toLocaleString()} /{" "}
+                        {d.current_supply.toLocaleString()}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3">
+
+                      <span
+                        className={`px-2 py-1 text-[9px] rounded-md font-bold uppercase ${
+                          d.gap > 0
+                            ? "bg-amber-100 text-amber-800"
+                            : "bg-emerald-100 text-emerald-800"
+                        }`}
+                      >
+                        {d.status}
+                      </span>
+
+                    </td>
+
+                    <td className="px-4 py-3">
+
+                      <div className="flex items-center gap-2 min-w-[130px]">
+
+                        <div className="flex-1 bg-slate-100 rounded-full h-1.5 overflow-hidden">
+                          <div
+                            className="bg-[#2F5D62]0 h-full rounded-full"
+                            style={{
+                              width: `${Math.min(
+                                100,
+                                Math.max(0, d.skill_demand_index)
+                              )}%`,
+                            }}
+                          />
+                        </div>
+
+                        <span className="text-[10px] font-black text-slate-600 w-6">
+                          {d.skill_demand_index}
+                        </span>
+
+                      </div>
+
+                    </td>
+
+                  </tr>
+                ))}
+
+              </tbody>
+
+            </table>
+
+          </div>
+        </div>
+
+      </>
+    )}
+
+  </div>
+)}
 
           {/* ── SKILL DEEP DIVE ── */}
           {activeTab === "deepdive" && (
@@ -335,7 +619,7 @@ export default function Dashboard() {
                         <p className="text-sm text-slate-500 mt-0.5">{skillData.district}, {skillData.state} · {skillData.sector}</p>
                       </div>
                       <div className="text-right">
-                        <div className="text-3xl font-black text-blue-600">{skillData.skill_demand_index}<span className="text-base text-slate-400">/100</span></div>
+                        <div className="text-3xl font-black text-[#3F665F]">{skillData.skill_demand_index}<span className="text-base text-slate-400">/100</span></div>
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Skill Demand Index</p>
                       </div>
                     </div>
@@ -357,52 +641,430 @@ export default function Dashboard() {
                       </div>
                     </div>
 
-                    {/* Forecast chart */}
-                    {forecast && (
-                      <div>
-                        <div className="flex items-center justify-between mb-3">
-                          <h3 className="text-sm font-bold text-slate-700">Deterministic Forecast (12 / 24 / 36 Months)</h3>
-                          <div className="flex items-center gap-1.5">
-                            <ShieldCheck size={14} className={forecast.confidence_level === "High" ? "text-green-500" : "text-amber-500"} />
-                            <span className="text-xs font-semibold text-slate-600">
-                              {forecast.confidence_level} confidence ({forecast.confidence_score}%)
-                            </span>
-                          </div>
-                        </div>
-                        <div className="h-52">
-                          <ResponsiveContainer width="100%" height="100%">
-                            <LineChart data={[
-                              { label: "Now", demand: forecast.current_demand, supply: forecast.current_supply },
-                              ...forecast.forecasts.map((f: any) => ({ label: `+${f.months}m`, demand: f.demand, supply: f.supply }))
-                            ]}>
-                              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                              <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#64748b" }} />
-                              <YAxis tick={{ fontSize: 11, fill: "#64748b" }} />
-                              <Tooltip />
-                              <Legend />
-                              <Line type="monotone" dataKey="demand" stroke="#3b82f6" strokeWidth={2.5} dot={{ r: 4 }} name="Demand" />
-                              <Line type="monotone" dataKey="supply" stroke="#10b981" strokeWidth={2.5} dot={{ r: 4 }} name="Supply" />
-                            </LineChart>
-                          </ResponsiveContainer>
-                        </div>
-                      </div>
-                    )}
+                   {/* Forecast chart */}
+{forecast && (
+  <div className="bg-white rounded-xl border border-[#D6E2DE] p-5 shadow-sm">
+    {/* Header */}
+    <div className="flex items-start justify-between mb-4">
+      <div>
+        <h3 className="text-sm font-bold text-[#314D49]">
+          Workforce Demand Forecast
+        </h3>
+        <p className="text-[11px] text-[#6F8580] mt-1">
+          Workforce trend from modelled backcast to future projection
+        </p>
+      </div>
+
+      <div className="flex items-center gap-1.5 bg-[#F5EBC7] border border-[#E3D59E] px-2.5 py-1.5 rounded-lg">
+        <ShieldCheck
+          size={14}
+          className={
+            forecast.confidence_level === "High"
+              ? "text-[#2F5D62]"
+              : "text-[#B89B5E]"
+          }
+        />
+        <span className="text-[11px] font-semibold text-[#314D49]">
+          {forecast.confidence_level} confidence
+        </span>
+      </div>
+    </div>
+
+    {/* Legend */}
+    <div className="flex items-center gap-5 mb-3 flex-wrap">
+      <div className="flex items-center gap-2">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#2F5D62]" />
+        <span className="text-[11px] font-medium text-[#526964]">
+          Demand
+        </span>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#B89B5E]" />
+        <span className="text-[11px] font-medium text-[#526964]">
+          Supply
+        </span>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#91AAA4]" />
+        <span className="text-[11px] font-medium text-[#526964]">
+          Backcast trend
+        </span>
+      </div>
+
+      <span className="ml-auto text-[10px] text-[#8A9B97]">
+        Past → Now → Future
+      </span>
+    </div>
+
+    {/* Main chart */}
+    <div className="h-64">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          data={[
+            {
+              label: "-24m",
+              demand:
+                forecast.current_demand /
+                Math.pow(1 + forecast.growth_rate, 2),
+              supply:
+                forecast.current_supply /
+                Math.pow(
+                  1 + forecast.growth_rate * 0.5,
+                  2
+                ),
+              period: "backcast",
+            },
+            {
+              label: "-12m",
+              demand:
+                forecast.current_demand /
+                Math.pow(1 + forecast.growth_rate, 1),
+              supply:
+                forecast.current_supply /
+                Math.pow(
+                  1 + forecast.growth_rate * 0.5,
+                  1
+                ),
+              period: "backcast",
+            },
+            {
+              label: "Now",
+              demand: forecast.current_demand,
+              supply: forecast.current_supply,
+              period: "current",
+            },
+            ...forecast.forecasts.map((f: any) => ({
+              label: `+${f.months}m`,
+              demand: f.demand,
+              supply: f.supply,
+              period: "forecast",
+            })),
+          ]}
+          margin={{ top: 10, right: 10, left: 0, bottom: 5 }}
+        >
+          <CartesianGrid
+            strokeDasharray="3 3"
+            vertical={false}
+            stroke="#E5ECE9"
+          />
+
+          <XAxis
+            dataKey="label"
+            tick={{
+              fontSize: 11,
+              fill: "#667A75",
+            }}
+            axisLine={{ stroke: "#D6E2DE" }}
+            tickLine={false}
+          />
+
+          <YAxis
+            tick={{
+              fontSize: 10,
+              fill: "#667A75",
+            }}
+            axisLine={false}
+            tickLine={false}
+          />
+
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #D6E2DE",
+              borderRadius: "10px",
+              boxShadow: "0 4px 14px rgba(47,93,98,0.10)",
+              fontSize: "12px",
+            }}
+            labelStyle={{
+              color: "#314D49",
+              fontWeight: 700,
+              marginBottom: "4px",
+            }}
+            formatter={(value: any, name: any) => [
+              Number(value).toLocaleString(),
+              name === "demand" ? "Demand" : "Supply",
+            ]}
+          />
+
+          <Line
+            type="monotone"
+            dataKey="demand"
+            stroke="#2F5D62"
+            strokeWidth={3}
+            dot={{
+              r: 4,
+              fill: "#2F5D62",
+              stroke: "#FFFFFF",
+              strokeWidth: 2,
+            }}
+            activeDot={{
+              r: 6,
+              fill: "#2F5D62",
+              stroke: "#FFFFFF",
+              strokeWidth: 2,
+            }}
+            name="demand"
+          />
+
+          <Line
+            type="monotone"
+            dataKey="supply"
+            stroke="#B89B5E"
+            strokeWidth={3}
+            dot={{
+              r: 4,
+              fill: "#B89B5E",
+              stroke: "#FFFFFF",
+              strokeWidth: 2,
+            }}
+            activeDot={{
+              r: 6,
+              fill: "#B89B5E",
+              stroke: "#FFFFFF",
+              strokeWidth: 2,
+            }}
+            name="supply"
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+
+    {/* Historical / forecast note */}
+    <div className="mt-2 flex items-center justify-between">
+      <span className="text-[10px] text-[#82938F]">
+        Past values are modelled backcast, not official historical observations.
+      </span>
+
+      <span className="text-[10px] font-semibold text-[#314D49]">
+        Now = current dataset
+      </span>
+    </div>
+
+    {/* Bottom analytics */}
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+
+      {/* Current gap */}
+      <div className="rounded-xl bg-[#EEF5F2] border border-[#D6E2DE] p-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-[10px] uppercase tracking-wider font-bold text-[#71857F]">
+              Current Workforce Gap
+            </p>
+
+            <p className="text-2xl font-extrabold text-[#314D49] mt-1">
+              {(
+                forecast.current_demand -
+                forecast.current_supply
+              ).toLocaleString()}
+            </p>
+
+            <p className="text-[10px] text-[#7B8E89] mt-1">
+              Demand − available supply
+            </p>
+          </div>
+
+          <div className="w-10 h-10 rounded-lg bg-white border border-[#D6E2DE] flex items-center justify-center">
+            <Target size={18} className="text-[#2F5D62]" />
+          </div>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <div className="bg-white rounded-lg border border-[#DDE8E4] p-2.5">
+            <p className="text-[9px] uppercase font-bold text-[#8A9B97]">
+              Demand
+            </p>
+            <p className="text-sm font-bold text-[#314D49] mt-0.5">
+              {forecast.current_demand.toLocaleString()}
+            </p>
+          </div>
+
+          <div className="bg-white rounded-lg border border-[#DDE8E4] p-2.5">
+            <p className="text-[9px] uppercase font-bold text-[#8A9B97]">
+              Supply
+            </p>
+            <p className="text-sm font-bold text-[#314D49] mt-0.5">
+              {forecast.current_supply.toLocaleString()}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Workforce balance donut */}
+      <div className="rounded-xl bg-[#F8F1D9] border border-[#E3D59E] p-4">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-[10px] uppercase tracking-wider font-bold text-[#8B7844]">
+              Workforce Balance
+            </p>
+
+            <p className="text-[11px] text-[#8B7844] mt-1">
+              Current supply coverage
+            </p>
+          </div>
+
+          <div className="text-[10px] font-semibold text-[#8B7844]">
+            Current
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center gap-5 mt-2">
+          <div className="relative w-28 h-28">
+            <PieChart width={112} height={112}>
+              <Pie
+              data={
+  forecast.current_supply >= forecast.current_demand
+    ? [
+        {
+          name: "Demand Utilized",
+          value:
+            forecast.current_supply > 0
+              ? (forecast.current_demand /
+                  forecast.current_supply) *
+                100
+              : 0,
+        },
+        {
+          name: "Surplus",
+          value:
+            forecast.current_supply > 0
+              ? ((forecast.current_supply -
+                  forecast.current_demand) /
+                  forecast.current_supply) *
+                100
+              : 0,
+        },
+      ]
+    : [
+        {
+          name: "Demand Covered",
+          value:
+            forecast.current_demand > 0
+              ? (forecast.current_supply /
+                  forecast.current_demand) *
+                100
+              : 0,
+        },
+        {
+          name: "Uncovered",
+          value:
+            forecast.current_demand > 0
+              ? ((forecast.current_demand -
+                  forecast.current_supply) /
+                  forecast.current_demand) *
+                100
+              : 100,
+        },
+      ]
+}
+                cx="50%"
+                cy="50%"
+                innerRadius={35}
+                outerRadius={50}
+                paddingAngle={3}
+                dataKey="value"
+                stroke="none"
+              >
+                <Cell fill="#2F5D62" />
+                <Cell fill="#D8C98F" />
+              </Pie>
+            </PieChart>
+
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="text-center">
+                <p className="text-lg font-extrabold text-[#314D49]">
+  {forecast.current_demand > 0
+    ? forecast.current_supply >= forecast.current_demand
+      ? Math.round(
+          (forecast.current_demand /
+            forecast.current_supply) *
+            100
+        )
+      : Math.round(
+          (forecast.current_supply /
+            forecast.current_demand) *
+            100
+        )
+    : 0}
+  %
+</p>
+               <p className="text-[8px] uppercase font-bold text-[#7B8E89]">
+  {forecast.current_supply >= forecast.current_demand
+    ? "utilized"
+    : "covered"}
+</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#2F5D62]" />
+                <span className="text-[10px] text-[#71857F]">
+                  Available supply
+                </span>
+              </div>
+              <p className="text-sm font-bold text-[#314D49] ml-4">
+                {forecast.current_supply.toLocaleString()}
+              </p>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#D8C98F]" />
+                <span className="text-[10px] text-[#71857F]">
+                  {forecast.current_supply >= forecast.current_demand
+                    ? "Surplus supply"
+                    : "Uncovered demand"}
+                </span>
+              </div>
+              <p className="text-sm font-bold text-[#314D49] ml-4">
+                {Math.abs(
+                  forecast.current_supply -
+                    forecast.current_demand
+                ).toLocaleString()}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Confidence footer */}
+    <div className="mt-4 text-center text-[10px] text-[#82938F]">
+      Forecast confidence score:{" "}
+      <span className="font-bold text-[#314D49]">
+        {forecast.confidence_score}%
+      </span>
+    </div>
+  </div>
+)}
                   </div>
 
-                  {/* Recommendations */}
-                  {recommendations.filter(r => r.skill === skillData.skill).length > 0 && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-5">
-                      <h3 className="text-sm font-bold text-blue-800 mb-3">Explainable Policy Recommendation</h3>
-                      {recommendations.filter(r => r.skill === skillData.skill).map((r, i) => (
-                        <div key={i}>
-                          <p className="text-sm font-semibold text-slate-800 mb-2">{r.recommendation}</p>
-                          <ul className="text-xs text-slate-600 space-y-1 list-disc pl-4">
-                            {r.reasons.map((reason: string, j: number) => <li key={j}>{reason}</li>)}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                 {/* Recommendations */}
+{recommendations.filter(r => r.skill === skillData.skill).length > 0 && (
+  <div className="bg-[#2F5D62] border border-[#527C75] rounded-xl p-5">
+    <h3 className="text-sm font-bold text-[#DCEBE7] mb-3">
+      Explainable Policy Recommendation
+    </h3>
+
+    {recommendations.filter(r => r.skill === skillData.skill).map((r, i) => (
+      <div key={i}>
+        <p className="text-sm font-semibold text-white mb-2">
+          {r.recommendation}
+        </p>
+
+        <ul className="text-xs text-[#C9DDD8] space-y-1.5 list-disc pl-4">
+          {r.reasons.map((reason: string, j: number) => (
+            <li key={j}>{reason}</li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+)}
 
                   {/* Skill Transitions */}
                   {transitions && transitions.transitions?.length > 0 && (
@@ -443,7 +1105,7 @@ export default function Dashboard() {
                   )}
 
                   {/* Workforce Flow Map quick view */}
-                  <div className="bg-white rounded-xl border border-indigo-200 shadow-sm p-5">
+                  <div className="bg-white rounded-xl border border-[#B8D1CC] shadow-sm p-5">
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
@@ -453,7 +1115,7 @@ export default function Dashboard() {
                       </div>
                       <button
                         onClick={() => setActiveTab("flowmap")}
-                        className="text-xs text-indigo-600 font-bold border border-indigo-200 px-3 py-1.5 rounded-lg hover:bg-indigo-50 transition-colors flex items-center gap-1"
+                        className="text-xs text-indigo-600 font-bold border border-[#B8D1CC] px-3 py-1.5 rounded-lg hover:bg-indigo-50 transition-colors flex items-center gap-1"
                       >
                         Full View <ArrowRight size={12} />
                       </button>
@@ -546,22 +1208,22 @@ export default function Dashboard() {
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <h3 className="text-xs font-bold text-blue-500 uppercase tracking-widest">Projected</h3>
-                      <div className="space-y-2 bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <h3 className="text-xs font-bold text-[#6F958D] uppercase tracking-widest">Projected</h3>
+                      <div className="space-y-2 bg-[#2F5D62] p-4 rounded-lg border border-[#B8D1CC]">
                         <div className="flex justify-between text-sm border-b border-blue-100 pb-1.5">
                           <span className="text-slate-500">Demand</span>
                           <span className="font-bold">{simResult.baseline_demand.toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between text-sm border-b border-blue-100 pb-1.5">
-                          <span className="text-slate-500">Projected Supply</span>
+                          <span className="text-[#D7E6E2]">Projected Supply</span>
                           <span className="font-bold text-emerald-600">{simResult.projected_supply.toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between text-sm border-b border-blue-100 pb-1.5">
-                          <span className="text-slate-800 font-semibold">Remaining Gap</span>
+                          <span className="text-white font-semibold">Remaining Gap</span>
                           <span className="font-black text-slate-800">{simResult.projected_gap.toLocaleString()}</span>
                         </div>
                         <div className="flex justify-between text-sm pt-1">
-                          <span className="text-slate-600 font-semibold">Gap Reduction</span>
+                        <span className="text-[#D7E6E2] font-semibold">Gap Reduction</span> 
                           <span className="text-xl font-black text-emerald-600">{simResult.gap_reduction_pct.toFixed(1)}%</span>
                         </div>
                       </div>
